@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.pyo
+*.backup-*
+*.bak*
+*.tmp
+.env
+config.json

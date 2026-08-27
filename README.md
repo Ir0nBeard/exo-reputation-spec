@@ -47,7 +47,7 @@ Given a carried claim envelope (claim + signature + commitment):
 3. Read-only EAS call: latest attestation for `agentId` has
    `scoreHash == keccak256(abi.encode(claim))` and `issuedAt >= claim.issuedAt`.
 4. Optional strongest: recompute the raw components from indexed chain events
-   and ***REMOVED*** identity; compare the composite.
+   and ERC-8004 registration + x402 receipts; compare the composite.
 
 See `spec/exo-reputation-eip712-v0.1.md` for the full recipe and domain
 parameters (Base mainnet chainId 8453, EAS `0x4200...21` as
@@ -58,8 +58,8 @@ verifyingContract).
 - Raw components travel with the composite score — a verifier that distrusts
   our weights can verify the components; one that trusts them verifies the
   composite in O(1).
-- Subject is the agent identity (***REMOVED*** UUID), never the wallet — a fresh
-  wallet cannot inherit a score.
+- Subject is the agent identity (ERC-8004 agentId or DID), never the wallet — a
+  fresh wallet cannot inherit a score.
 - 7-day claim expiry + per-agent nonce + EIP-712 domain separation: no
   stale claims, no replays, cross-chain replay impossible.
 - Sybil resistance: identity binding, age penalty, import cap,
@@ -75,8 +75,8 @@ See CONTRIBUTING.md.
 
 - EXO project: https://exo.foundation (design bible; the guild economy is the
   first customer of this spec, never its only one)
-- ***REMOVED*** Identity API: https://***REMOVED***.com/developers.md (identity
-  bootstrap — karma, claim status, owner X verification)
+- ERC-8004 Identity Registry on Base: https://eips.ethereum.org/EIPS/eip-8004
+  (permissionless on-chain identity anchor — registration, wallet binding)
 - EAS: https://attest.org (on-chain commitment rail, predeployed on Base)
 
 ## License
