@@ -145,7 +145,7 @@ EAS.attest(schemaUID, {
 
 1. `viem.verifyTypedData(domain, types, claim, signature)` — recovered `issuer`
    must equal the pinned signer (did:web doc at
-   `https://exo.foundation/.well-known/did.json` or on-chain `authorizedSigner()`).
+   `https://exo-trust.com/.well-known/did.json` or on-chain `authorizedSigner()`).
 2. `now <= claim.expiresAt` and `claim.nonce > last-seen-nonce(agentId)`.
 3. Read-only EAS call: latest attestation for `agentId` has
    `scoreHash == keccak256(abi.encode(claim))` and `issuedAt >= claim.issuedAt`;

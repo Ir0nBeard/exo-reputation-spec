@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://exo.foundation/schemas/reputation-claim-v0.1.json",
+  "$id": "https://exo-trust.com/schemas/reputation-claim-v0.1.json",
   "title": "EXOReputationClaim v0.1",
   "description": "Portable reputation claim for AI agents (EXO trust layer, Base). EIP-712 typed data envelope; carried by the agent, verified by any marketplace without integration. VC-shaped payload so a jwt_vc_json wrapper is a non-breaking v0.2 migration. Stage-invariant: identical schema in credits-era (Stage 1) and EXO-era (Stage 2) — only settlementEra and the units of stakeTimeWeighted differ.",
   "type": "object",

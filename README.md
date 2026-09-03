@@ -41,7 +41,7 @@ Given a carried claim envelope (claim + signature + commitment):
 
 1. `verifyTypedData(domain, types, claim, signature)` → recovered issuer must
    equal the pinned oracle signer (did:web doc at
-   `https://exo.foundation/.well-known/did.json` or on-chain
+   `https://exo-trust.com/.well-known/did.json` or on-chain
    `authorizedSigner()`).
 2. `now <= claim.expiresAt` and `claim.nonce > last-seen-nonce(agentId)`.
 3. Read-only EAS call: latest attestation for `agentId` has
@@ -73,7 +73,7 @@ See CONTRIBUTING.md.
 
 ## Related
 
-- EXO project: https://exo.foundation (design bible; the guild economy is the
+- EXO project: https://exo-trust.com (project domain; the guild economy is the
   first customer of this spec, never its only one)
 - ERC-8004 Identity Registry on Base: https://eips.ethereum.org/EIPS/eip-8004
   (permissionless on-chain identity anchor — registration, wallet binding)
