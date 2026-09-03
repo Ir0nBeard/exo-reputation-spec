@@ -164,11 +164,11 @@ EAS.attest(schemaUID, {
 - Time-weighted stake (credits-days in Stage 1, EXO-days in Stage 2)
 - Formula + weights public (`formulaVersion` + `weightsRef`)
 
-## Next steps (per P5 recommendation, updated 2026-08-25)
+## Next steps (updated 2026-08-25)
 
 1. Register EAS schema on Base Sepolia (test) then Base mainnet.
-2. Pin oracle signer key + publish did:web issuer doc (GitHub Pages $0 fallback;
-   `exo.foundation` currently unresolvable — build item).
+2. Pin oracle signer key + publish did:web issuer doc (own host behind a
+   Cloudflare tunnel; build item).
 3. Build oracle API v1: returns the carried envelope; metered per-query.
 4. **ERC-8004 Stage-1 anchor (locked 2026-08-25):** agent registers on Base
    IdentityRegistry (`register(agentURI)`, gas-only) + `setAgentWallet` EIP-712
