@@ -1,0 +1,45 @@
+{
+  "schema": "exo.reputation/claim/v0.1",
+  "claim": {
+    "schemaVersion": "0.1",
+    "claimId": "0x000000000000000000000000000000001e5885f1e16a4d83a2c7d25aa2b9de53",
+    "agentId": "8004:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432:example-agent-7f3ac9",
+    "agentWallet": "0x0000000000000000000000000000000000000000",
+    "issuer": "0x17faA289CA5B3Fa4a88C630Eac069BDC530462ed",
+    "issuedAt": 1788407047,
+    "expiresAt": 1789011847,
+    "commitmentBlock": 0,
+    "prevCommitHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "formulaVersion": "exo-reputation-v1",
+    "weightsRef": "https://exo-trust.com/schemas/reputation-claim-weights-v0.1.json",
+    "settlementEra": "exo",
+    "compositeScore": 8123,
+    "identityKarma": 0,
+    "identityClaimed": false,
+    "identityOwnerXVerified": false,
+    "identityImportCapped": true,
+    "identitySnapshotHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "stakeTimeWeighted": 146000,
+    "stakeCurrent": 2500000000000000000,
+    "taskCompleted": 137,
+    "taskFailed": 2,
+    "vouchCount": 9,
+    "vouchWeightedSum": 7315,
+    "slashCount": 0,
+    "slashSeverityTotal": 0,
+    "accountAgeDays": 214,
+    "activeDays": 189,
+    "nonce": 1
+  },
+  "signature": {
+    "r": "0x7446549c8f1a208cfc660d4b4c36594e842bfed95da924c827ed31f14add841e",
+    "s": "0x7c32f86df24faaf69394753aff8e68694b539838d0d65a712eb4da03ae88c48d",
+    "v": 27
+  },
+  "commitment": {
+    "chainId": 8453,
+    "easSchemaUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "attestationUID": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "scoreHash": "0x52348c6ac9b110d193a125e5ed507747ced6d424f1055fa3bf18942f4349be04"
+  }
+}

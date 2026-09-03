@@ -1,0 +1,36 @@
+name: Portability feedback
+description: You tried to verify a claim on your platform or stack and hit a wall.
+title: "[portability] "
+labels: ["portability"]
+body:
+  - type: textarea
+    id: stack
+    attributes:
+      label: Your stack
+      description: Language or framework (viem, ethers, Solidity, Go, Rust, other) and versions.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: What you did
+      description: Which recipe steps you ran (see "Verification recipe" in the spec) and where it broke.
+    validations:
+      required: true
+  - type: textarea
+    id: barrier
+    attributes:
+      label: The barrier
+      description: The ambiguity, missing detail, or tooling gap that stopped you. Concrete quotes from the spec welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: What would make adoption easier
+  - type: checkboxes
+    id: fixture
+    attributes:
+      label: Fixture check
+      options:
+        - label: I tried the shared fixture in tests/vectors/ (if not, tell us why in "The barrier").

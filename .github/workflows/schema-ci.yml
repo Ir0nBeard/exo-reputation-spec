@@ -1,0 +1,50 @@
+name: schema-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-schema:
+    name: JSON Schema meta-validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install jsonschema
+        run: pip install jsonschema
+      - name: Validate schema files against draft 2020-12
+        run: |
+          python3 - <<'PY'
+          import glob, json, sys
+          from jsonschema import Draft202012Validator
+          paths = sorted(glob.glob("schema/*.json"))
+          errors = []
+          for p in paths:
+              try:
+                  Draft202012Validator.check_schema(json.load(open(p)))
+                  print(f"OK   {p} — valid against JSON Schema draft 2020-12")
+              except Exception as e:
+                  errors.append(f"{p}: {e}")
+          if errors:
+              print("SCHEMA VALIDATION FAILED:")
+              for e in errors:
+                  print("  " + e)
+              sys.exit(1)
+          print(f"{len(paths)} schema file(s) valid")
+          PY
+
+  verifier-self-test:
+    name: Verifier self-test on shipped fixture
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install verifier dependencies
+        run: pip install eth-account eth-abi jsonschema
+      - name: Run verifier against tests/vectors fixture
+        run: python3 tests/vectors/self_test.py

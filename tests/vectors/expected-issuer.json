@@ -1,0 +1,7 @@
+{
+  "role": "example issuer for the tests/vectors fixture (throwaway key — no value, never used for real claims)",
+  "address": "0x17faA289CA5B3Fa4a88C630Eac069BDC530462ed",
+  "network": "Base mainnet (EIP-712 domain chainId 8453)",
+  "generated": "2026-09-03, packaging round",
+  "production_pinning": "Production issuers are pinned via the did:web document at https://exo-trust.com/.well-known/did.json — never trust an issuer address from the claim itself"
+}

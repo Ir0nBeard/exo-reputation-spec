@@ -1,7 +1,10 @@
 # EXO Reputation Claim v0.1 — EIP-712 Specification
 
-> Status: FROZEN 2026-08-21 (P5-validated: `docs/P5_REPUTATION_DATA_MODEL_RESEARCH_20260821.md`; EAS predeploys verified live on Base mainnet — both contracts deployed, v1.0.1).
-> Schema JSON: `docs/EXO_REPUTATION_SCHEMA_v0.1.json`.
+> Status: FROZEN 2026-08-21 (EAS predeploys verified live on Base mainnet —
+> both contracts deployed, v1.0.1). Schema semantics are frozen; editorial,
+> URL, and process changes are tracked in CHANGELOG.md.
+> Canonical schema JSON: https://exo-trust.com/schemas/reputation-claim-v0.1.json
+> (repo copy: `schema/reputation-claim-v0.1.json`).
 
 ## Addendum v0.1.1 (2026-08-25) — on-chain identity anchor [SEMANTIC NOTE, schema bytes unchanged]
 
@@ -61,8 +64,17 @@ Receipts** (Linux Foundation-governed; EIP-712/did:pkh or JWS/did:web).
 }
 ```
 
-- `chainId` 84532 for Base Sepolia.
 - `version` bumps on schema change or oracle key rotation (invalidates old sigs).
+
+### Base mainnet vs Base Sepolia (testnet)
+
+The domain block above is the **Base mainnet** domain (chainId 8453). Test
+envelopes use the identical domain values with `chainId: 84532` (Base
+Sepolia) — same `name`, `version`, and `verifyingContract`. The EIP-712
+domain-separation check therefore rejects a Sepolia-signed claim on a
+mainnet verifier, and vice versa. The envelope's `commitment.chainId` must
+equal the chainId of the domain the claim was signed under. The reference
+verifier (`verifier/verify_claim.py`) verifies mainnet envelopes by default.
 
 ## Claim struct (the signed payload)
 
@@ -164,15 +176,23 @@ EAS.attest(schemaUID, {
 - Time-weighted stake (credits-days in Stage 1, EXO-days in Stage 2)
 - Formula + weights public (`formulaVersion` + `weightsRef`)
 
-## Next steps (updated 2026-08-25)
+## Roadmap (non-normative)
 
-1. Register EAS schema on Base Sepolia (test) then Base mainnet.
-2. Pin oracle signer key + publish did:web issuer doc (own host behind a
-   Cloudflare tunnel; build item).
-3. Build oracle API v1: returns the carried envelope; metered per-query.
-4. **ERC-8004 Stage-1 anchor (locked 2026-08-25):** agent registers on Base
-   IdentityRegistry (`register(agentURI)`, gas-only) + `setAgentWallet` EIP-712
-   proof; `agentId` = `8004:8453:0x8004A1…:agentId`. See Addendum v0.1.1.
-5. **Synergy work evidence:** enable x402 Signed Offers & Receipts in the gateway
-   flow (EIP-712/did:pkh) — first real attestation data, no self-reports.
-6. Optional (non-gating): capped Signet score import (see Addendum v0.1.1).
+Reference-implementation status, not part of the frozen schema. Roadmap items
+are tracked as issues; see GOVERNANCE.md for how proposals become changes.
+
+1. Register the EAS schema on Base Sepolia (test), then Base mainnet.
+2. Publish the did:web issuer document for the pinned signer at
+   `https://exo-trust.com/.well-known/did.json` — a prerequisite for third
+   parties exercising the verification recipe (see Addendum v0.1.1).
+3. Reference oracle API v1: serve carried envelopes on request, metered per
+   query.
+4. **ERC-8004 identity anchor (locked 2026-08-25):** agents register on the
+   Base Identity Registry (`register(agentURI)`, gas-only) and bind a wallet
+   via an EIP-712 proof; `agentId` = `8004:8453:<registry>:<agentId>`. See
+   Addendum v0.1.1.
+5. **Work evidence:** enable x402 Signed Offers & Receipts (EIP-712/did:pkh)
+   as attestation data sources — first real behavior data, no self-reports.
+6. Optional (non-gating): capped import of third-party identity scores,
+   naming Signet (https://signetai.sh) as a compatibility target — evaluated,
+   not required.

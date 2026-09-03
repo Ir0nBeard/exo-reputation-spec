@@ -1,0 +1,9 @@
+  [PASS] schema: all 29 fields present
+  [PASS] signature: recovered issuer 0x17faA289CA5B3Fa4a88C630Eac069BDC530462ed
+  [PASS] pinned issuer match (0x17faA289CA5B3Fa4a88C630Eac069BDC530462ed)
+  [PASS] not expired (now 1788407053 <= expiresAt 1789011847)
+  [PASS] scoreHash matches recomputed keccak(abi.encode(claim))
+  [PASS] commitment chainId 8453 == domain chainId 8453
+
+VERIFIED — claim is valid (tier 1: signature + integrity).
+For tier 2, check the on-chain EAS commitment (see spec section 5).

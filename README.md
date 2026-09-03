@@ -1,84 +1,69 @@
 # EXO Reputation Spec
 
-**Portable, verifiable reputation for AI agents.**
+**Portable, verifiable reputation for AI agents.** An open standard for
+carrying an agent's reputation as a signed EIP-712 claim envelope instead of
+any single platform's internal score. Any EVM marketplace can verify a claim —
+signature, on-chain commitment, or recomputation from raw components — with
+zero integration.
 
-This repository is the open specification for EXO's reputation claim format —
-a portable, tamper-evident, on-chain-committed reputation score that any
-agent can carry to any marketplace, and that any EVM platform can verify
-without integrating with us.
+- **Portable** — one envelope, any EVM platform.
+- **Verifiable** — three trust tiers, verifier's choice: signature-only,
+  on-chain commitment, recomputation.
+- **Tamper-evident** — rolling hash-chain commitments on Base (EAS
+  predeploys) make history rewrites detectable.
+- **Stage- and settlement-agnostic** — one schema across eras and currencies.
 
-Status: **v0.1 draft** (frozen 2026-08-21, open for comment).
-
-## What this is
-
-The agent economy has a trust problem: anonymous programs transacting at
-scale, with no neutral way to vet a counterparty. EXO's answer is a
-reputation claim that is:
-
-- **Portable** — an agent carries it as a signed EIP-712 claim; it works on
-  any EVM platform with zero integration.
-- **Verifiable** — signature check, on-chain commitment check, or full
-  recomputation from chain events. Three trust tiers, verifier's choice.
-- **Tamper-evident** — a rolling hash chain on Base (via EAS predeploys)
-  means the oracle cannot rewrite history without detection.
-- **Stage-invariant** — identical schema in the credits era and the EXO era;
-  only the `settlementEra` field and stake units differ.
-- **Settlement-agnostic** — reputation never requires paying in any
-  particular currency. Trust is the product; the service is open.
+**Status:** v0.1 draft — frozen 2026-08-21, open for comment. An additive
+v0.1.1 addendum (2026-08-25) pins the on-chain identity anchor without
+changing schema bytes. Schema semantics are frozen; process and docs remain
+open through the issue tracker.
 
 ## Repository layout
 
 ```
-schema/reputation-claim-v0.1.json   JSON Schema (canonical field definitions)
+schema/reputation-claim-v0.1.json   Canonical JSON Schema (29 fields)
 spec/exo-reputation-eip712-v0.1.md  EIP-712 envelope + verification recipe
-verifier/verify_claim.py            Standalone example verifier (Python)
+verifier/verify_claim.py            Reference verifier (stock eth_account)
+tests/vectors/                      Signed example envelope + expected results
 LICENSE                             MIT
 ```
 
-## Quick verification recipe (any EVM stack)
+## Verify a claim in four steps
 
-Given a carried claim envelope (claim + signature + commitment):
-
-1. `verifyTypedData(domain, types, claim, signature)` → recovered issuer must
-   equal the pinned oracle signer (did:web doc at
+1. Recover the issuer: `verifyTypedData(domain, types, claim, signature)`
+   must equal the pinned signer (did:web at
    `https://exo-trust.com/.well-known/did.json` or on-chain
    `authorizedSigner()`).
-2. `now <= claim.expiresAt` and `claim.nonce > last-seen-nonce(agentId)`.
-3. Read-only EAS call: latest attestation for `agentId` has
-   `scoreHash == keccak256(abi.encode(claim))` and `issuedAt >= claim.issuedAt`.
-4. Optional strongest: recompute the raw components from indexed chain events
-   and ERC-8004 registration + x402 receipts; compare the composite.
+2. Check `now <= expiresAt` and `nonce > last-seen-nonce(agentId)`.
+3. Read-only EAS call: the latest attestation for `agentId` has
+   `scoreHash == keccak256(abi.encode(claim))` and
+   `issuedAt >= claim.issuedAt`.
+4. Optional strongest tier: recompute components from indexed chain events,
+   ERC-8004 registration, and x402 receipts.
 
-See `spec/exo-reputation-eip712-v0.1.md` for the full recipe and domain
-parameters (Base mainnet chainId 8453, EAS `0x4200...21` as
-verifyingContract).
+```bash
+python3 verifier/verify_claim.py \
+  tests/vectors/envelope-v0.1-example.json \
+  --expected-issuer <pinned issuer>
+```
 
-## Design principles
+Domain parameters and the full recipe are in the spec (Base mainnet chainId
+8453, EAS `0x4200...21` as `verifyingContract`).
 
-- Raw components travel with the composite score — a verifier that distrusts
-  our weights can verify the components; one that trusts them verifies the
-  composite in O(1).
-- Subject is the agent identity (ERC-8004 agentId or DID), never the wallet — a
-  fresh wallet cannot inherit a score.
-- 7-day claim expiry + per-agent nonce + EIP-712 domain separation: no
-  stale claims, no replays, cross-chain replay impossible.
-- Sybil resistance: identity binding, age penalty, import cap,
-  reputation-weighted vouches, permanent public slashes, time-weighted stake.
+## Governance
 
-## Commenting / contributing
+- GOVERNANCE.md — change process, version-bump rule, decision log
+- CONTRIBUTING.md — how to contribute
+- SECURITY.md — private disclosure
+- CHANGELOG.md — version history (Keep a Changelog)
 
-This is a living draft. Open an issue or PR for schema changes, additional
-verifier implementations (viem, ethers, Solidity), or portability feedback.
-See CONTRIBUTING.md.
+## Related standards
 
-## Related
-
-- EXO project: https://exo-trust.com (project domain; the guild economy is the
-  first customer of this spec, never its only one)
-- ERC-8004 Identity Registry on Base: https://eips.ethereum.org/EIPS/eip-8004
-  (permissionless on-chain identity anchor — registration, wallet binding)
-- EAS: https://attest.org (on-chain commitment rail, predeployed on Base)
+- ERC-8004 agent identity:
+  https://github.com/ethereum/ERCs/blob/master/ERCS/erc-8004.md
+- EAS (on-chain commitments): https://attest.org
+- Canonical schema: https://exo-trust.com/schemas/reputation-claim-v0.1.json
 
 ## License
 
-MIT — the spec is open; the data moat is the accumulated reputation corpus.
+MIT

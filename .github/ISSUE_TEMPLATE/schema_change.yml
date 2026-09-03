@@ -1,0 +1,50 @@
+name: Proposed schema change
+description: Propose a change to the reputation claim schema. By rule, any accepted change ships as a new version at a new $id path.
+title: "[schema-change] "
+labels: ["schema"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        v0.1 is **frozen**: fields, types, constraints, and EIP-712 structure
+        never change in place. Any accepted change ships as a new version at a
+        **new `$id` path** (e.g. `reputation-claim-v0.2.json`); the v0.1
+        document and its `$id` stay byte-identical and served. Editorial
+        changes do not need this template — open a regular issue or PR.
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Use case
+      description: The concrete scenario the change enables, from the adopter's perspective.
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed change
+      description: Exact fields, types, or constraints to add, remove, or alter. A draft JSON Schema fragment is welcome.
+      render: json
+    validations:
+      required: true
+  - type: dropdown
+    id: compatibility
+    attributes:
+      label: Compatibility
+      description: Relationship to v0.1 envelopes
+      options:
+        - Backward-compatible addition (v0.1 verifiers keep working)
+        - Breaking change (new version of 0.x with a migration note)
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Affected verifiers, indexers, or platforms you know of, and the migration cost.
+  - type: checkboxes
+    id: version
+    attributes:
+      label: Version rule acknowledgment
+      options:
+        - label: I understand an accepted change ships as a NEW version at a NEW $id path — v0.1 is never mutated.
+          required: true
